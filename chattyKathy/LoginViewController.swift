@@ -25,7 +25,17 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func loginAnonymouslyDidTapped(_ sender: Any) {
-        print("loginAnonymouslyDidTapped")
+        //create storyboard instance
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        //from main storyboard, instantiate navi controller
+        let naviVC = storyboard.instantiateViewController(withIdentifier: "NavigationVC") as! UINavigationController
+        
+        //get the app delegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        //set the navi controller as root view controller
+        appDelegate.window?.rootViewController = naviVC
     }
     
     
