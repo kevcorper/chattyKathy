@@ -9,6 +9,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Helvetica.ttc">
+            <string>Helvetica</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Login View Controller-->
         <scene sceneID="vhS-xV-SrP">
@@ -18,30 +23,71 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P5Z-iK-r7V">
-                                <rect key="frame" x="120" y="225" width="134" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Login Anonymously"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgroundPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="P7f-26-rKE">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P5Z-iK-r7V">
+                                <rect key="frame" x="87" y="230" width="200" height="33"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="opC-yh-ii8"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="18"/>
+                                <state key="normal" title="Login Anonymously">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                                 <connections>
                                     <action selector="loginAnonymouslyDidTapped:" destination="jgI-V4-4nH" eventType="touchUpInside" id="pug-cb-c7M"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wf8-e8-2xI">
-                                <rect key="frame" x="142" y="379" width="91" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Google Login"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wf8-e8-2xI">
+                                <rect key="frame" x="164.5" y="403" width="47" height="43"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="43" id="I7I-c6-oFO"/>
+                                    <constraint firstAttribute="width" constant="47" id="ZNm-hL-xta"/>
+                                </constraints>
+                                <state key="normal" image="googleButton">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                                 <connections>
                                     <action selector="googleLoginDidTapped:" destination="jgI-V4-4nH" eventType="touchUpInside" id="aSs-7W-yL2"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="OrLine" translatesAutoresizingMaskIntoConstraints="NO" id="wAg-e3-6cb">
+                                <rect key="frame" x="88" y="328" width="200" height="10"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="6X0-Ed-xcy"/>
+                                    <constraint firstAttribute="height" constant="10" id="FoL-Py-th1"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="P7f-26-rKE" firstAttribute="trailing" secondItem="Sn0-Y1-gDx" secondAttribute="trailing" id="13m-23-afC"/>
+                            <constraint firstItem="P7f-26-rKE" firstAttribute="leading" secondItem="Sn0-Y1-gDx" secondAttribute="leading" id="HPb-vJ-5b8"/>
+                            <constraint firstItem="wAg-e3-6cb" firstAttribute="centerX" secondItem="pmy-hQ-lzV" secondAttribute="centerX" id="JOr-fU-9Op"/>
+                            <constraint firstItem="wAg-e3-6cb" firstAttribute="centerY" secondItem="pmy-hQ-lzV" secondAttribute="centerY" id="LZc-eX-6x1"/>
+                            <constraint firstItem="wAg-e3-6cb" firstAttribute="centerX" secondItem="pmy-hQ-lzV" secondAttribute="centerX" id="Ldd-we-0GK"/>
+                            <constraint firstItem="P7f-26-rKE" firstAttribute="top" secondItem="pmy-hQ-lzV" secondAttribute="top" id="PZz-hG-mOk"/>
+                            <constraint firstItem="P7f-26-rKE" firstAttribute="trailing" secondItem="Sn0-Y1-gDx" secondAttribute="trailing" id="XU3-4q-OIc"/>
+                            <constraint firstItem="P7f-26-rKE" firstAttribute="leading" secondItem="Sn0-Y1-gDx" secondAttribute="leading" id="boA-e8-Iie"/>
+                            <constraint firstItem="P7f-26-rKE" firstAttribute="bottom" secondItem="Sn0-Y1-gDx" secondAttribute="bottom" id="dUR-kX-yQc"/>
+                            <constraint firstItem="wf8-e8-2xI" firstAttribute="centerX" secondItem="pmy-hQ-lzV" secondAttribute="centerX" id="eGi-lq-rf6"/>
+                            <constraint firstItem="wf8-e8-2xI" firstAttribute="top" secondItem="wAg-e3-6cb" secondAttribute="bottom" constant="65" id="gya-Dc-fcR"/>
+                            <constraint firstItem="P5Z-iK-r7V" firstAttribute="centerX" secondItem="pmy-hQ-lzV" secondAttribute="centerX" id="j24-P1-kaU"/>
+                            <constraint firstItem="wAg-e3-6cb" firstAttribute="top" secondItem="P5Z-iK-r7V" secondAttribute="bottom" constant="65" id="k4K-Og-ukb"/>
+                            <constraint firstItem="P7f-26-rKE" firstAttribute="top" secondItem="pmy-hQ-lzV" secondAttribute="top" id="kFw-Gl-B9C"/>
+                            <constraint firstItem="wAg-e3-6cb" firstAttribute="centerY" secondItem="pmy-hQ-lzV" secondAttribute="centerY" id="rt9-9g-1yE"/>
+                            <constraint firstItem="P7f-26-rKE" firstAttribute="bottom" secondItem="Sn0-Y1-gDx" secondAttribute="bottom" id="ttz-Jt-4Dp"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="Sn0-Y1-gDx"/>
                     </view>
+                    <connections>
+                        <outlet property="loginAnonymouslyButton" destination="P5Z-iK-r7V" id="pKB-PX-Ode"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nWk-Gr-sCN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="74" y="143"/>
+            <point key="canvasLocation" x="72.799999999999997" y="142.57871064467767"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="wTc-t2-Qvj">
@@ -59,4 +105,9 @@
             <point key="canvasLocation" x="802" y="143"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="OrLine" width="864" height="45"/>
+        <image name="backgroundPhoto" width="562" height="1000"/>
+        <image name="googleButton" width="120" height="120"/>
+    </resources>
 </document>
