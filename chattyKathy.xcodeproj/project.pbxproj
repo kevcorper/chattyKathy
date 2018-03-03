@@ -11,6 +11,8 @@
 		F79ACC90204A4E3700B65AC3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F79ACC8E204A4E3700B65AC3 /* Main.storyboard */; };
 		F79ACC92204A4E3700B65AC3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F79ACC91204A4E3700B65AC3 /* Assets.xcassets */; };
 		F79ACC95204A4E3700B65AC3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F79ACC93204A4E3700B65AC3 /* LaunchScreen.storyboard */; };
+		F79ACC9D204A4F4200B65AC3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79ACC9C204A4F4200B65AC3 /* LoginViewController.swift */; };
+		F79ACC9F204A4FAE00B65AC3 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79ACC9E204A4FAE00B65AC3 /* ChatViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +22,8 @@
 		F79ACC91204A4E3700B65AC3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F79ACC94204A4E3700B65AC3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F79ACC96204A4E3700B65AC3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F79ACC9C204A4F4200B65AC3 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		F79ACC9E204A4FAE00B65AC3 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +58,8 @@
 			children = (
 				F79ACC8A204A4E3700B65AC3 /* AppDelegate.swift */,
 				F79ACC8E204A4E3700B65AC3 /* Main.storyboard */,
+				F79ACC9C204A4F4200B65AC3 /* LoginViewController.swift */,
+				F79ACC9E204A4FAE00B65AC3 /* ChatViewController.swift */,
 				F79ACC91204A4E3700B65AC3 /* Assets.xcassets */,
 				F79ACC93204A4E3700B65AC3 /* LaunchScreen.storyboard */,
 				F79ACC96204A4E3700B65AC3 /* Info.plist */,
@@ -133,6 +139,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F79ACC9D204A4F4200B65AC3 /* LoginViewController.swift in Sources */,
+				F79ACC9F204A4FAE00B65AC3 /* ChatViewController.swift in Sources */,
 				F79ACC8B204A4E3700B65AC3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
