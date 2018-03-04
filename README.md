@@ -19,4 +19,5 @@ On top of this, custom URL schemes were added but will need to be done manually 
 3. GoogleSignIn
 4. JSQMessagesViewController
 
-### Created through udemy course "Professional iOS Chat App with Social Login using Firebase" from The Zero2Launch Team
+### Credit
+Created through udemy course "Professional iOS Chat App with Social Login using Firebase" from The Zero2Launch Team
