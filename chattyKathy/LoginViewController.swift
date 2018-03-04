@@ -7,16 +7,46 @@
 //
 
 import UIKit
+import GoogleSignIn
+import Firebase
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
 
     @IBOutlet weak var loginAnonymouslyButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         loginAnonymouslyButton.layer.borderWidth = 2.0
         loginAnonymouslyButton.layer.borderColor = UIColor.white.cgColor
+        
+        GIDSignIn.sharedInstance().clientID = FirebaseApp.app()?.options.clientID
+        GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance().uiDelegate = self
+        
+        //set clientID of GIDSignIn using GoogleService plist
+        if let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") {
+            let dictRoot = NSDictionary(contentsOfFile: path)
+            if let dict = dictRoot {
+                GIDSignIn.sharedInstance().clientID = dict["CLIENT_ID"] as! String
+            }
+        }
+    }
+    
+    //handle Google SignIn URL
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        return GIDSignIn.sharedInstance().handle(url, sourceApplication:options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: [:])
+    }
+    
+    //MARK: -Google SignIn Protocol
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        guard let authentication = user.authentication else { return }
+        Helper.helper.loginWithGoogle(authentication: authentication)
+    }
+    
+    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
+        // Perform any operations when the user disconnects from app here.
+        // ...
     }
 
     override func didReceiveMemoryWarning() {
@@ -30,7 +60,7 @@ class LoginViewController: UIViewController {
     
     
     @IBAction func googleLoginDidTapped(_ sender: Any) {
-        print("googleLoginDidTapped")
+        GIDSignIn.sharedInstance().signIn()
     }
     
 }

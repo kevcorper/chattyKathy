@@ -9,4 +9,5 @@ target 'chattyKathy' do
 	pod ‘Firebase/Core’
 	pod 'Firebase/Auth'
 	pod ‘GoogleSignIn’
+	pod ‘JSQMessagesViewController’
 end
