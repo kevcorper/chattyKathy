@@ -15,6 +15,7 @@
 		F79ACC9D204A4F4200B65AC3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79ACC9C204A4F4200B65AC3 /* LoginViewController.swift */; };
 		F79ACC9F204A4FAE00B65AC3 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79ACC9E204A4FAE00B65AC3 /* ChatViewController.swift */; };
 		F79ACCA6204C843A00B65AC3 /* GoogleService-Info (1).plist in Resources */ = {isa = PBXBuildFile; fileRef = F79ACCA5204C843A00B65AC3 /* GoogleService-Info (1).plist */; };
+		F79ACCA8204C8F4000B65AC3 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79ACCA7204C8F4000B65AC3 /* Helper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		F79ACC9C204A4F4200B65AC3 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		F79ACC9E204A4FAE00B65AC3 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		F79ACCA5204C843A00B65AC3 /* GoogleService-Info (1).plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info (1).plist"; sourceTree = "<group>"; };
+		F79ACCA7204C8F4000B65AC3 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 				F79ACC8A204A4E3700B65AC3 /* AppDelegate.swift */,
 				F79ACC8E204A4E3700B65AC3 /* Main.storyboard */,
 				F79ACC9C204A4F4200B65AC3 /* LoginViewController.swift */,
+				F79ACCA7204C8F4000B65AC3 /* Helper.swift */,
 				F79ACC9E204A4FAE00B65AC3 /* ChatViewController.swift */,
 				F79ACC91204A4E3700B65AC3 /* Assets.xcassets */,
 				F79ACC93204A4E3700B65AC3 /* LaunchScreen.storyboard */,
@@ -173,11 +176,13 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-chattyKathy/Pods-chattyKathy-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -229,6 +234,7 @@
 				F79ACC9D204A4F4200B65AC3 /* LoginViewController.swift in Sources */,
 				F79ACC9F204A4FAE00B65AC3 /* ChatViewController.swift in Sources */,
 				F79ACC8B204A4E3700B65AC3 /* AppDelegate.swift in Sources */,
+				F79ACCA8204C8F4000B65AC3 /* Helper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

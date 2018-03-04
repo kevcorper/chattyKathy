@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseAuth
 
 class LoginViewController: UIViewController {
 
@@ -25,17 +27,16 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func loginAnonymouslyDidTapped(_ sender: Any) {
-        //create storyboard instance
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        //from main storyboard, instantiate navi controller
-        let naviVC = storyboard.instantiateViewController(withIdentifier: "NavigationVC") as! UINavigationController
-        
-        //get the app delegate
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        
-        //set the navi controller as root view controller
-        appDelegate.window?.rootViewController = naviVC
+        Auth.auth().signInAnonymously { (anonUser, error) in
+            if error == nil {
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let naviVC = storyboard.instantiateViewController(withIdentifier: "NavigationVC") as! UINavigationController
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                appDelegate.window?.rootViewController = naviVC
+            } else {
+                print("Error in loggin in anonymously - error: \(String(describing: error))")
+            }
+        }
     }
     
     
