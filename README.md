@@ -1,5 +1,5 @@
 # chattyKathy
-A fully functioning chat app utilizing firebase.  
+A fully functioning chat app utilizing anonymous and Google-authorized login using firebase.  
 
 ## Setup
 The GoogleService-Info.plist will need to be added manually as it contains personal Firebase credentials. 
