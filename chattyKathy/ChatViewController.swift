@@ -9,6 +9,7 @@
 import UIKit
 import JSQMessagesViewController
 import MobileCoreServices
+import AVKit
 
 class ChatViewController: JSQMessagesViewController {
     
@@ -80,9 +81,17 @@ class ChatViewController: JSQMessagesViewController {
         return cell
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, didTapMessageBubbleAt indexPath: IndexPath!) {
+        let message = messages[indexPath.item]
+        
+        if message.isMediaMessage {
+            if let mediaItem = message.media as? JSQVideoMediaItem {
+                let player = AVPlayer(url: mediaItem.fileURL)
+                let playerViewController = AVPlayerViewController()
+                playerViewController.player = player
+                self.present(playerViewController, animated: true, completion: nil)
+            }
+        }
     }
     
     
