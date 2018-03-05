@@ -8,6 +8,7 @@
 
 import UIKit
 import JSQMessagesViewController
+import MobileCoreServices
 
 class ChatViewController: JSQMessagesViewController {
     
@@ -26,7 +27,35 @@ class ChatViewController: JSQMessagesViewController {
     }
     
     override func didPressAccessoryButton(_ sender: UIButton!) {
-        print("didPressAccessoryButton")
+        let sheet = UIAlertController(title: "Media Messages", message: "Please select a media", preferredStyle: UIAlertControllerStyle.actionSheet)
+        
+        let cancel = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { (uiAlert) in
+            
+        }
+        
+        let photoLibrary = UIAlertAction(title: "Photo Library", style: UIAlertActionStyle.default) { (alert) in
+            self.getMediaFrom(type: kUTTypeImage)
+        }
+        
+        let videoLibrary = UIAlertAction(title: "Video Library", style: UIAlertActionStyle.default) { (alert) in
+            self.getMediaFrom(type: kUTTypeMovie)
+        }
+        
+        sheet.addAction(photoLibrary)
+        sheet.addAction(videoLibrary)
+        sheet.addAction(cancel)
+        self.present(sheet, animated: true, completion: nil)
+        
+//        let imagePicker = UIImagePickerController()
+//        imagePicker.delegate = self
+//        self.present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func getMediaFrom(type: CFString) {
+        let mediaPicker = UIImagePickerController()
+        mediaPicker.delegate = self
+        mediaPicker.mediaTypes = [type as String]
+        self.present(mediaPicker, animated: true, completion: nil)
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
@@ -38,7 +67,9 @@ class ChatViewController: JSQMessagesViewController {
         return bubbleFactory?.outgoingMessagesBubbleImage(with: UIColor.black)
     }
     
-    override func
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
+        return nil
+    }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
@@ -62,4 +93,18 @@ class ChatViewController: JSQMessagesViewController {
         appDelegate.window?.rootViewController = loginVC
     }
     
+}
+
+extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            let jsqImage = JSQPhotoMediaItem(image: image)
+            messages.append(JSQMessage(senderId: senderId, displayName: senderDisplayName, media: jsqImage))
+        } else if let video = info[UIImagePickerControllerMediaURL] as? NSURL {
+            let jsqVideo = JSQVideoMediaItem(fileURL: video as URL!, isReadyToPlay: true)
+            messages.append(JSQMessage(senderId: senderId, displayName: senderDisplayName, media: jsqVideo))
+        }
+        self.dismiss(animated: true, completion: nil)
+        collectionView.reloadData()
+    }
 }
