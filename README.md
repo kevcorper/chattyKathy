@@ -3,7 +3,7 @@ A fully functioning chat app utilizing anonymous and Google-authorized login usi
 
 ## Setup
 The GoogleService-Info.plist will need to be added manually as it contains personal Firebase credentials. 
-On top of this, custom URL schemes were added but will need to be done manually using the REVERSED-CLIENT-ID. An example info.plist is provided for reference to project config.
+Furthermore, custom URL schemes were added but will need to be done manually using the REVERSED-CLIENT-ID. An example info.plist is provided for reference to project config.
 
 ## Tech
 1. Swift 4
