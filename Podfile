@@ -8,6 +8,8 @@ target 'chattyKathy' do
   # Pods for chattyKathy
 	pod ‘Firebase/Core’
 	pod 'Firebase/Auth'
+    pod 'FirebaseDatabase'
+    pod 'FirebaseStorage'
 	pod ‘GoogleSignIn’
 	pod ‘JSQMessagesViewController’
 end

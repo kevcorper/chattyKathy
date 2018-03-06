@@ -25,21 +25,45 @@ class ChatViewController: JSQMessagesViewController {
         self.senderId = "1"
         self.senderDisplayName = "kev"
         
-//        observeMessages()
+        observeMessages()
     }
     
     func observeMessages() {
-        messageRef.observe(.childAdded) { (snapshot) in
+        messageRef.observe(.childAdded, with: { snapshot in
             if let messageDict = snapshot.value as? [String: Any] {
                 let mediaType = messageDict["media"] as! String
                 let senderId = messageDict["senderId"] as! String
                 let senderName = messageDict["senderName"] as! String
-                let text = messageDict["text"] as! String
                 
-                self.messages.append(JSQMessage(senderId: senderId, displayName: senderName, text: text))
+                switch mediaType {
+                    case "TEXT":
+                        let text = messageDict["text"] as! String
+                        self.messages.append(JSQMessage(senderId: senderId, displayName: senderName, text: text))
+                    
+                    case "PHOTO":
+                        let fileURL = messageDict["fileURL"] as? String
+                        let url = URL(string: fileURL!)
+                        do {
+                            let data = try Data(contentsOf: url!)
+                            let picture = UIImage(data: data)
+                            let photo = JSQPhotoMediaItem(image: picture)
+                            self.messages.append(JSQMessage(senderId: senderId, displayName: senderName, media: photo))
+                        } catch {
+                            print("Unable to create data from image url contents")
+                        }
+                    
+                    case "VIDEO":
+                        let fileURL = messageDict["fileURL"] as? String
+                        let video = URL(string: fileURL!)
+                        let videoItem = JSQVideoMediaItem(fileURL: video, isReadyToPlay: true)
+                        self.messages.append(JSQMessage(senderId: senderId, displayName: senderName, media: videoItem))
+                    default:
+                        print("Unknown media type value")
+                }
+                
                 self.collectionView.reloadData()
             }
-        }
+        })
     }
     
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
@@ -116,6 +140,12 @@ class ChatViewController: JSQMessagesViewController {
     
     
     @IBAction func logoutDidTapped(_ sender: Any) {
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            print("Error: \(error)")
+        }
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let loginVC = storyboard.instantiateViewController(withIdentifier: "LoginVC") as! LoginViewController
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
