@@ -19,6 +19,7 @@ class ChatViewController: JSQMessagesViewController {
     var messages   = [JSQMessage]()
     var avatarDict = [String: JSQMessagesAvatarImage]()
     var messageRef = Database.database().reference().child("messages")
+    let photoCache = NSCache<NSString, JSQPhotoMediaItem>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,23 +78,35 @@ class ChatViewController: JSQMessagesViewController {
                         self.messages.append(JSQMessage(senderId: senderId, displayName: senderName, text: text))
                     
                     case "PHOTO":
+                        var photo = JSQPhotoMediaItem(image: nil)
                         let fileURL = messageDict["fileURL"] as? String
                         let url = URL(string: fileURL!)
-                        do {
-                            let data = try Data(contentsOf: url!)
-                            let picture = UIImage(data: data)
-                            let photo = JSQPhotoMediaItem(image: picture)
-                            
-                            if senderId == self.senderId {
-                                photo?.appliesMediaViewMaskAsOutgoing = true
-                            } else {
-                                photo?.appliesMediaViewMaskAsOutgoing = false
+                        
+                        if let cachedPhoto = self.photoCache.object(forKey: fileURL! as NSString) {
+                            photo = cachedPhoto
+                            self.collectionView.reloadData()
+                        } else {
+                            DispatchQueue.global(qos: .userInitiated).async {
+                                do {
+                                    let data = try Data(contentsOf: url!)
+                                    DispatchQueue.main.async {
+                                        let picture = UIImage(data: data)
+                                        photo?.image = picture
+                                        self.collectionView.reloadData()
+                                        self.photoCache.setObject(photo!, forKey: fileURL! as NSString)
+                                    }
+                                } catch {
+                                    print("Unable to create data from image url contents")
+                                }
                             }
-                            
-                            self.messages.append(JSQMessage(senderId: senderId, displayName: senderName, media: photo))
-                        } catch {
-                            print("Unable to create data from image url contents")
                         }
+                        
+                        if senderId == self.senderId {
+                            photo?.appliesMediaViewMaskAsOutgoing = true
+                        } else {
+                            photo?.appliesMediaViewMaskAsOutgoing = false
+                        }
+                        self.messages.append(JSQMessage(senderId: senderId, displayName: senderName, media: photo))
                     
                     case "VIDEO":
                         let fileURL = messageDict["fileURL"] as? String
