@@ -16,16 +16,50 @@ import FirebaseAuth
 
 class ChatViewController: JSQMessagesViewController {
     
-    var messages = [JSQMessage]()
+    var messages   = [JSQMessage]()
+    var avatarDict = [String: JSQMessagesAvatarImage]()
     var messageRef = Database.database().reference().child("messages")
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.senderId = "1"
-        self.senderDisplayName = "kev"
+        if let currentUser = Auth.auth().currentUser {
+            self.senderId = currentUser.uid
+            
+            if currentUser.isAnonymous == true {
+                self.senderDisplayName = "Anonymous"
+            } else {
+                self.senderDisplayName = "\(currentUser.displayName!)"
+            }
+        }
         
         observeMessages()
+    }
+    
+    func observeUser(withId id : String) {
+        Database.database().reference().child("users").child(id).observe(.value) { (snapshot) in
+            if let userDict = snapshot.value as? [String: Any] {
+                let avatarURL = userDict["profileURL"] as! String
+                self.setupAvatar(withURL: avatarURL, withSenderID: id)
+            }
+        }
+    }
+    
+    func setupAvatar(withURL url : String, withSenderID id : String) {
+        if url != "" {
+            let fileURL = URL(string: url)
+            do {
+                let data = try Data(contentsOf: fileURL!)
+                let image = UIImage(data: data)
+                let userImg = JSQMessagesAvatarImageFactory.avatarImage(with: image, diameter: 30)
+                avatarDict[id] = userImg
+            } catch {
+                print("unable to set user Avatar for google user")
+            }
+        } else {
+             avatarDict[id] = JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named: "profileImage"), diameter: 30)
+        }
+        self.collectionView.reloadData()
     }
     
     func observeMessages() {
@@ -34,6 +68,8 @@ class ChatViewController: JSQMessagesViewController {
                 let mediaType = messageDict["media"] as! String
                 let senderId = messageDict["senderId"] as! String
                 let senderName = messageDict["senderName"] as! String
+                
+                self.observeUser(withId: senderId)
                 
                 switch mediaType {
                     case "TEXT":
@@ -47,6 +83,13 @@ class ChatViewController: JSQMessagesViewController {
                             let data = try Data(contentsOf: url!)
                             let picture = UIImage(data: data)
                             let photo = JSQPhotoMediaItem(image: picture)
+                            
+                            if senderId == self.senderId {
+                                photo?.appliesMediaViewMaskAsOutgoing = true
+                            } else {
+                                photo?.appliesMediaViewMaskAsOutgoing = false
+                            }
+                            
                             self.messages.append(JSQMessage(senderId: senderId, displayName: senderName, media: photo))
                         } catch {
                             print("Unable to create data from image url contents")
@@ -56,6 +99,13 @@ class ChatViewController: JSQMessagesViewController {
                         let fileURL = messageDict["fileURL"] as? String
                         let video = URL(string: fileURL!)
                         let videoItem = JSQVideoMediaItem(fileURL: video, isReadyToPlay: true)
+                        
+                        if senderId == self.senderId {
+                            videoItem?.appliesMediaViewMaskAsOutgoing = true
+                        } else {
+                            videoItem?.appliesMediaViewMaskAsOutgoing = false
+                        }
+                        
                         self.messages.append(JSQMessage(senderId: senderId, displayName: senderName, media: videoItem))
                     default:
                         print("Unknown media type value")
@@ -67,12 +117,10 @@ class ChatViewController: JSQMessagesViewController {
     }
     
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
-//        messages.append(JSQMessage(senderId: senderId, displayName: senderDisplayName, text: text))
-//        collectionView.reloadData()
-        
         let newMessage = messageRef.childByAutoId()
         let messageData = ["text": text, "senderId": senderId, "senderName": senderDisplayName, "media": "TEXT"]
         newMessage.setValue(messageData)
+        self.finishSendingMessage()
     }
     
     override func didPressAccessoryButton(_ sender: UIButton!) {
@@ -108,12 +156,19 @@ class ChatViewController: JSQMessagesViewController {
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
+        let message = messages[indexPath.item]
         let bubbleFactory = JSQMessagesBubbleImageFactory()
-        return bubbleFactory?.outgoingMessagesBubbleImage(with: UIColor.black)
+
+        if message.senderId == self.senderId {
+            return bubbleFactory?.outgoingMessagesBubbleImage(with: UIColor.black)
+        } else {
+            return bubbleFactory?.incomingMessagesBubbleImage(with: UIColor.blue)
+        }
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
-        return nil
+        let message = messages[indexPath.item]
+        return self.avatarDict[message.senderId]
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -190,12 +245,8 @@ class ChatViewController: JSQMessagesViewController {
 extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            let jsqImage = JSQPhotoMediaItem(image: image)
-            messages.append(JSQMessage(senderId: senderId, displayName: senderDisplayName, media: jsqImage))
             sendMedia(picture: image, video: nil)
         } else if let video = info[UIImagePickerControllerMediaURL] as? NSURL {
-            let jsqVideo = JSQVideoMediaItem(fileURL: video as URL!, isReadyToPlay: true)
-            messages.append(JSQMessage(senderId: senderId, displayName: senderDisplayName, media: jsqVideo))
             sendMedia(picture: nil, video: video)
         }
         self.dismiss(animated: true, completion: nil)
