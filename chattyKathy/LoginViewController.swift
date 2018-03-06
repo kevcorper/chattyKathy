@@ -9,6 +9,7 @@
 import UIKit
 import GoogleSignIn
 import Firebase
+import FirebaseAuth
 
 class LoginViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
 
@@ -29,6 +30,17 @@ class LoginViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDeleg
             let dictRoot = NSDictionary(contentsOfFile: path)
             if let dict = dictRoot {
                 GIDSignIn.sharedInstance().clientID = dict["CLIENT_ID"] as! String
+            }
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        Auth.auth().addStateDidChangeListener { (auth, user) in
+            if user != nil {
+                Helper.helper.switchViewToNVC()
+            } else {
+                print("No authorized user")
             }
         }
     }
